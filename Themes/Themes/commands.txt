@@ -1,0 +1,1 @@
+sudo cp -r  Dark-Moon /usr/share/themes/

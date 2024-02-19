@@ -24,22 +24,20 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-
-from libqtile import bar, layout, widget, hook
+from libqtile import bar, layout, qtile, widget, hook
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
-
 from os import path
 import subprocess
-
 
 @hook.subscribe.startup_once
 def autostart():
     subprocess.call([path.join(path.expanduser('~'), '.config', 'qtile', 'autostart.sh')])
 
+
 mod = "mod4"
-terminal = guess_terminal()
+terminal = "alacritty"
 
 keys = [
 # VENTANAS
@@ -94,7 +92,7 @@ keys = [
     Key([mod], "m", lazy.spawn("rofi -show drun")),
 
     #Scrot
-    Key([mod], "s", lazy.spawn("scrot")),
+    Key([mod], "s", lazy.spawn("scrot Images/Screenshot/'%Y-%m-%d_$wx$h.png' --format png")),
 
     #Thunar
     Key([mod], "e", lazy.spawn("thunar")),
@@ -125,33 +123,25 @@ keys = [
     # Brightness
     Key([], "XF86MonBrightnessUp", lazy.spawn("brightnessctl set +10%")),
     Key([], "XF86MonBrightnessDown", lazy.spawn("brightnessctl set 10%-")),
+
+
+    # Redshift
+    Key([mod], "r", lazy.spawn("redshift -O 2400")),
+    Key([mod, "shift"], "r", lazy.spawn("redshift -x")),
 ]
 
-# groups = [Group(i) for i in "123456789"]
-
-# for i in groups:
-#     keys.extend(
-#         [
-#             # mod1 + letter of group = switch to group
-#             Key(
-#                 [mod],
-#                 i.name,
-#                 lazy.group[i.name].toscreen(),
-#                 desc="Switch to group {}".format(i.name),
-#             ),
-#             # mod1 + shift + letter of group = switch to & move focused window to group
-#             Key(
-#                 [mod, "shift"],
-#                 i.name,
-#                 lazy.window.togroup(i.name, switch_group=True),
-#                 desc="Switch to & move focused window to group {}".format(i.name),
-#             ),
-#             # Or, use below if you prefer not to switch to that group.
-#             # # mod1 + shift + letter of group = move focused window to group
-#             # Key([mod, "shift"], i.name, lazy.window.togroup(i.name),
-#             #     desc="move focused window to group {}".format(i.name)),
-#         ]
-#     )
+# Add key bindings to switch VTs in Wayland.
+# We can't check qtile.core.name in default config as it is loaded before qtile is started
+# We therefore defer the check until the key binding is run by using .when(func=...)
+for vt in range(1, 8):
+    keys.append(
+        Key(
+            ["control", "mod1"],
+            f"f{vt}",
+            lazy.core.change_vt(vt).when(func=lambda: qtile.core.name == "wayland"),
+            desc=f"Switch to VT{vt}",
+        )
+    )
 
 groups = [Group(i) for i in [
     " 󰖟 ","  ", "  ","  ", "  ", "   ", "󰑈 ","  ", " 󰣇 ",
@@ -166,6 +156,31 @@ for i, group in enumerate(groups):
         Key([mod, "shift"], actual_key, lazy.window.togroup(group.name))
 ])
 
+# groups = [Group(i) for i in "123456789"]
+
+# for i in groups:
+#     keys.extend(
+#         [
+#             # mod1 + group number = switch to group
+#             Key(
+#                 [mod],
+#                 i.name,
+#                 lazy.group[i.name].toscreen(),
+#                 desc="Switch to group {}".format(i.name),
+#             ),
+#             # mod1 + shift + group number = switch to & move focused window to group
+#             Key(
+#                 [mod, "shift"],
+#                 i.name,
+#                 lazy.window.togroup(i.name, switch_group=True),
+#                 desc="Switch to & move focused window to group {}".format(i.name),
+#             ),
+#             # Or, use below if you prefer not to switch to that group.
+#             # # mod1 + shift + group number = move focused window to group
+#             # Key([mod, "shift"], i.name, lazy.window.togroup(i.name),
+#             #     desc="move focused window to group {}".format(i.name)),
+#         ]
+#     )
 layout_conf = {
     'border_focus': '#FFF700',
     'border_width': 2,
@@ -196,6 +211,7 @@ widget_defaults = dict(
 )
 extension_defaults = widget_defaults.copy()
 
+
 screens = [
     Screen(
         top=bar.Bar(
@@ -204,7 +220,7 @@ screens = [
                     foreground=["#f1ffff", "#f1ffff"],
                     background=["#01012b", "#01012b"],
                     font='UbuntuMono Nerd Font',
-                    fontsize=19,
+                    fontsize=16,
                     margin_y=3,
                     margin_x=0,
                     padding_y=8,
@@ -287,7 +303,7 @@ screens = [
                 # widget.QuickExit(),
             ],
             26,
-            opacity=0.95
+            opacity=1
             # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
             # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
         ),
@@ -297,16 +313,16 @@ screens = [
             [
                 widget.GroupBox(
                     foreground=["#f1ffff", "#f1ffff"],
-                    background=["#030d22", "#030d22"],
+                    background=["#01012b", "#01012b"],
                     font='UbuntuMono Nerd Font',
-                    fontsize=19,
+                    fontsize=16,
                     margin_y=3,
                     margin_x=0,
                     padding_y=8,
                     padding_x=5,
                     borderwidth=1,
                     active=["#f1ffff", "#f1ffff"],
-                    inactive=["#4c566a", "#4c566a"],
+                    inactive=["#0a86c5", "#0a86c5"],
                     rounded=False,
                     highlight_method='block',
                     urgent_alert_method='block',
@@ -319,13 +335,22 @@ screens = [
                 ),
                 # widget.Prompt(),
                 widget.WindowName(
-                    foreground=["#ff2a6d", "#ff2a6d"],
+                    foreground=["#07a9f7", "#07a9f7"],
                     background=["#030d22", "#030d22"],
                     fontsize=13,
                     font='UbuntuMono Nerd Font Bold',
                 ),
+
                 widget.Image(
-                    filename=path.join(path.expanduser('~'), '.config', 'qtile', 'img', 'bar2.png')
+                    filename=path.join(path.expanduser('~'), '.config', 'qtile', 'img', 'bar6.png')
+                ),
+                # widget.Sep(
+                #     background=["#0f101a", "#0f101a"],
+                #     linewidth=0, 
+                #     padding=5
+                # ),
+                widget.Image(
+                    filename=path.join(path.expanduser('~'), '.config', 'qtile', 'img', 'bar9.png')
                 ),
                 widget.CurrentLayoutIcon(
                     foreground=["#030d22", "#030d22"],
@@ -336,13 +361,23 @@ screens = [
                     foreground=["#030d22", "#030d22"],
                     background=["#06aaf8", "#06aaf8"],
                 ),
+                # widget.Chord(
+                #     chords_colors={
+                #         "launch": ("#ff0000", "#ffffff"),
+                #     },
+                #     name_transform=lambda name: name.upper(),
+                # ),
+                # widget.TextBox("default config", name="default"),
+                # widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
+                # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
+                # widget.StatusNotifier(),
                 widget.Sep(
                     background=["#06aaf8", "#06aaf8"],
                     linewidth=0, 
                     padding=5
                 ),
                 widget.Image(
-                    filename=path.join(path.expanduser('~'), '.config', 'qtile', 'img', 'bar1.png')
+                    filename=path.join(path.expanduser('~'), '.config', 'qtile', 'img', 'bar8.png')
                 ),
                 widget.TextBox(
                     background=["#ff2a6d", "#ff2a6d"],
@@ -355,9 +390,12 @@ screens = [
                     padding=5,
                     format='%d/%m/%Y - %H:%M '
                 ),
+                # widget.QuickExit(),
             ],
             26,
             opacity=0.95
+            # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
+            # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
         ),
     ),
 ]
@@ -373,6 +411,7 @@ dgroups_key_binder = None
 dgroups_app_rules = []  # type: list
 follow_mouse_focus = True
 bring_front_click = False
+floats_kept_above = True
 cursor_warp = False
 floating_layout = layout.Floating(
     float_rules=[

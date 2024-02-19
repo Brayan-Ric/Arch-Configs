@@ -1,0 +1,13 @@
+aic94xx-firmware
+bdf-unifont
+cmatrix-git
+cmatrix-git-debug
+google-chrome
+simple-mtpfs
+simple-mtpfs-debug
+spicetify-cli-debug
+visual-studio-code-bin
+visual-studio-code-bin-debug
+wd719x-firmware
+yay-git
+yay-git-debug

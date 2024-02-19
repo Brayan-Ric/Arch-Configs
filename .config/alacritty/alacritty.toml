@@ -2,7 +2,7 @@
 black = "0x808080"
 blue = "0x6699FF"
 cyan = "0x66FFFF"
-green = "0x66FF99"
+green = "#00FF9F"
 magenta = "0xFF66FF"
 red = "0xFF6699"
 white = "0xFFFFFF"

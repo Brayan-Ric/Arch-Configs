@@ -4,8 +4,8 @@
 	<icon>utilities-terminal</icon>
 	<name>Abrir un terminal aquí</name>
 	<submenu></submenu>
-	<unique-id>1691948527683648-1</unique-id>
-	<command>exo-open --working-directory %f --launch TerminalEmulator</command>
+	<unique-id>1707840171704490-1</unique-id>
+	<command>alacritty -v</command>
 	<description>Ejemplo de una acción personalizada</description>
 	<range></range>
 	<patterns>*</patterns>
