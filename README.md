@@ -2,6 +2,8 @@
 
 Este repositorio contiene mis configuraciones personalizadas para mi sistema Arch Linux con un tema inspirado en el estilo cyberpunk.
 
+![Captura de pantalla del tema cyberpunk](Images/cyberpunk-theme.png)
+
 ## Contenido
 
 - **.config**: Directorio que contiene las configuraciones de varias aplicaciones, como gestores de ventanas, navegadores, editores de texto, etc.
@@ -9,6 +11,13 @@ Este repositorio contiene mis configuraciones personalizadas para mi sistema Arc
 - **themes**: Directorio que almacena los temas personalizados para diferentes aplicaciones y componentes del sistema.
 - **pkglist.txt**: Lista de paquetes instalados desde los repositorios oficiales de Arch Linux.
 - **pkglist-aur.txt**: Lista de paquetes instalados desde el AUR (Arch User Repository).
+
+
+## Qtile (Administrador de Ventanas)
+
+En esta configuracion de Arch se utilizara Qtile como administrador de ventas
+
+![Captura de pantalla de ventanas qtile](Images/qtile.png)
 
 ## Uso
 
@@ -83,6 +92,19 @@ sudo cp -r Your_Thunar_Theme /usr/share/themes/
 Finalmente, para seleccionar los temas de íconos, cursores y el tema general del sistema, puedes utilizar el programa `lxappearance`. Ejecuta `lxappearance` en tu terminal y podrás seleccionar y aplicar los temas que desees desde la interfaz gráfica.
 
 Espero que estos pasos te ayuden a personalizar la apariencia de tu sistema Arch Linux con los temas proporcionados en este repositorio. Si tienes alguna pregunta o necesitas más ayuda, ¡no dudes en preguntar!
+
+## Images
+
+![Captura de pantalla del tema cyberpunk](Images/cyberpunk-theme.png)
+
+![Captura de pantalla de ventanas qtile](Images/qtile.png)
+
+![Captura de pantalla de ranger](Images/ranger.png)
+
+![Captura de pantalla de ranger con vistazo de imagenes](Images/ranger_img.png)
+
+![Captura de pantalla de rofi](Images/rofi.png)
+
 
 ## Contribuciones
 
